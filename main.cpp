@@ -154,6 +154,18 @@ public:
     vector<int>Blue_Heat42=vector<int>(99);
 };
 
+int Extra;
+int weishu(int n){
+    int i=0;
+    while (n!=0){
+        n=n/10;
+        i++;
+    }
+    Extra = i-1;
+}
+
+
+
 int main() {
     char cmd[20];
     vector<char> Red_Robot(99);
@@ -161,11 +173,13 @@ int main() {
     Robot iRobot;
     int Flag = 0;
     char Team_Number, Robot_Number;
-    int Number;
+    int Number, Damage, Bullet;
+    int RH17,RH42;
+    int BH17,BH42;
     while (Flag != 1) {
         cin.getline(cmd, 20);
         if (cmd[0] != 'E') {
-            if (cmd[0] == 'A') {                           //ÃüÁî×ÖÅÐ¶Ï
+            if (cmd[0] == 'A') {
                 Team_Number = cmd[2];
                 Robot_Number = cmd[4];
                 Number = atoi(&cmd[6]);
@@ -185,21 +199,174 @@ int main() {
                     iRobot.Blue_Heat42_Init(Robot_Number, Number);
                 }
             }
-        }else {
-            Flag = 1;
-        }
-    }
-    cout<<"Team : Red"<<endl;
-    for (int tmp = 0; tmp < iRobot.Check_Red_Number(); tmp++){
-        if(iRobot.Red_Blood[tmp]!=0)
-        cout << "Robot Type:" << Red_Robot[tmp] << "   Blood:" << iRobot.Red_Blood[tmp] << "  17mm:" << iRobot.Red_Heat17[tmp] << "  42mm:" << iRobot.Red_Heat42[tmp] << endl;
-    }
-    cout<<"Team : Blue"<<endl;
-    for (int tmp = 0; tmp < iRobot.Check_Blue_Number(); tmp++){
-        if(iRobot.Blue_Blood[tmp]!=0)
-        cout << "Robot Type:" << Blue_Robot[tmp] << "  Blood:" << iRobot.Blue_Blood[tmp] << "  17mm:" << iRobot.Blue_Heat17[tmp] << "  42mm:" << iRobot.Blue_Heat42[tmp] << endl;
-    }
 
-    return 0;
+            if (cmd[0] == 'F') {
+                Team_Number = cmd[2];
+                Number = atoi(&cmd[4]);
+                weishu(Number);
+                Damage = atoi(&cmd[6 + Extra]);
+                int tmp_Blood;
+                if (Team_Number == 'R') {
+                    tmp_Blood = iRobot.Red_Blood[Number] - Damage;
+                    if (tmp_Blood <= 0) {
+                        iRobot.Red_Blood.erase(iRobot.Red_Blood.begin() + Number);
+                        iRobot.Red_Blood.insert(iRobot.Red_Blood.begin() + Number, -1);
+                        iRobot.Red_Heat17.erase(iRobot.Red_Heat17.begin() + Number);
+                        iRobot.Red_Heat17.insert(iRobot.Red_Heat17.begin() + Number, 0);
+                        iRobot.Red_Heat42.erase(iRobot.Red_Heat42.begin() + Number);
+                        iRobot.Red_Heat42.insert(iRobot.Red_Heat42.begin() + Number, 0);
+                    }
+                    if (tmp_Blood > 0) {
+                        iRobot.Red_Blood.erase(iRobot.Red_Blood.begin() + Number);
+                        iRobot.Red_Blood.insert(iRobot.Red_Blood.begin() + Number, tmp_Blood);
+                    }
+                }
+
+                if (Team_Number == 'B') {
+                    tmp_Blood = iRobot.Blue_Blood[Number] - Damage;
+                    if (tmp_Blood <= 0) {
+                        iRobot.Blue_Blood.erase(iRobot.Blue_Blood.begin() + Number);
+                        iRobot.Blue_Blood.insert(iRobot.Blue_Blood.begin() + Number, -1);
+                        iRobot.Blue_Heat17.erase(iRobot.Blue_Heat17.begin() + Number);
+                        iRobot.Blue_Heat17.insert(iRobot.Blue_Heat17.begin() + Number, 0);
+                        iRobot.Blue_Heat42.erase(iRobot.Blue_Heat42.begin() + Number);
+                        iRobot.Blue_Heat42.insert(iRobot.Blue_Heat42.begin() + Number, 0);
+                    }
+                    if (tmp_Blood > 0) {
+                        iRobot.Blue_Blood.erase(iRobot.Blue_Blood.begin() + Number);
+                        iRobot.Blue_Blood.insert(iRobot.Blue_Blood.begin() + Number, tmp_Blood);
+                    }
+                }
+            }
+            if (cmd[0] == 'H') {
+                Team_Number = cmd[2];
+                Number = atoi(&cmd[4]);
+                weishu(Number);
+                Bullet = atoi(&cmd[6 + Extra]);
+                int tmp_Heat, tmp_Type;
+                if (Team_Number == 'R') {
+                    tmp_Type = Red_Robot[Number];
+                    if (tmp_Type == 'B' || tmp_Type == 'S') {
+                        tmp_Heat = iRobot.Red_Heat17[Number] - (Bullet * 15);
+                        if (tmp_Heat <= 0) {
+                            iRobot.Red_Blood.erase(iRobot.Red_Blood.begin() + Number);
+                            iRobot.Red_Blood.insert(iRobot.Red_Blood.begin() + Number, 0);
+                            iRobot.Red_Heat17.erase(iRobot.Red_Heat17.begin() + Number);
+                            iRobot.Red_Heat17.insert(iRobot.Red_Heat17.begin() + Number, -1);
+                            iRobot.Red_Heat42.erase(iRobot.Red_Heat42.begin() + Number);
+                            iRobot.Red_Heat42.insert(iRobot.Red_Heat42.begin() + Number, 0);
+                        }
+                        if (tmp_Heat > 0) {
+                            iRobot.Red_Heat17.erase(iRobot.Red_Heat17.begin() + Number);
+                            iRobot.Red_Heat17.insert(iRobot.Red_Heat17.begin() + Number, tmp_Heat);
+                        }
+                    }
+                    if (tmp_Type == 'Y') {
+                        tmp_Heat = iRobot.Red_Heat42[Number] - (Bullet * 30);
+                        if (tmp_Heat <= 0) {
+                            iRobot.Red_Blood.erase(iRobot.Red_Blood.begin() + Number);
+                            iRobot.Red_Blood.insert(iRobot.Red_Blood.begin() + Number, 0);
+                            iRobot.Red_Heat17.erase(iRobot.Red_Heat17.begin() + Number);
+                            iRobot.Red_Heat17.insert(iRobot.Red_Heat17.begin() + Number, 0);
+                            iRobot.Red_Heat42.erase(iRobot.Red_Heat42.begin() + Number);
+                            iRobot.Red_Heat42.insert(iRobot.Red_Heat42.begin() + Number, -1);
+                        }
+                        if (tmp_Heat > 0) {
+                            iRobot.Red_Heat42.erase(iRobot.Red_Heat42.begin() + Number);
+                            iRobot.Red_Heat42.insert(iRobot.Red_Heat42.begin() + Number, tmp_Heat);
+                        }
+                    }
+                }
+                if (Team_Number == 'B') {
+                    tmp_Type = Blue_Robot[Number];
+                    if (tmp_Type == 'B' || tmp_Type == 'S') {
+                        tmp_Heat = iRobot.Blue_Heat17[Number] - (Bullet * 15);
+                        if (tmp_Heat <= 0) {
+                            iRobot.Blue_Blood.erase(iRobot.Blue_Blood.begin() + Number);
+                            iRobot.Blue_Blood.insert(iRobot.Blue_Blood.begin() + Number, 0);
+                            iRobot.Blue_Heat17.erase(iRobot.Blue_Heat17.begin() + Number);
+                            iRobot.Blue_Heat17.insert(iRobot.Blue_Heat17.begin() + Number, -1);
+                            iRobot.Blue_Heat42.erase(iRobot.Blue_Heat42.begin() + Number);
+                            iRobot.Blue_Heat42.insert(iRobot.Blue_Heat42.begin() + Number, 0);
+                        }
+                        if (tmp_Heat > 0) {
+                            iRobot.Blue_Heat17.erase(iRobot.Blue_Heat17.begin() + Number);
+                            iRobot.Blue_Heat17.insert(iRobot.Blue_Heat17.begin() + Number, tmp_Heat);
+                        }
+                    }
+                    if (tmp_Type == 'Y') {
+                        tmp_Heat = iRobot.Red_Heat42[Number] - (Bullet * 30);
+                        if (tmp_Heat <= 0) {
+                            iRobot.Blue_Blood.erase(iRobot.Blue_Blood.begin() + Number);
+                            iRobot.Blue_Blood.insert(iRobot.Blue_Blood.begin() + Number, 0);
+                            iRobot.Blue_Heat17.erase(iRobot.Blue_Heat17.begin() + Number);
+                            iRobot.Blue_Heat17.insert(iRobot.Blue_Heat17.begin() + Number, 0);
+                            iRobot.Blue_Heat42.erase(iRobot.Blue_Heat42.begin() + Number);
+                            iRobot.Blue_Heat42.insert(iRobot.Blue_Heat42.begin() + Number, -1);
+                        }
+                        if (tmp_Heat > 0) {
+                            iRobot.Blue_Heat42.erase(iRobot.Blue_Heat42.begin() + Number);
+                            iRobot.Blue_Heat42.insert(iRobot.Blue_Heat42.begin() + Number, tmp_Heat);
+                        }
+                    }
+                }
+            }
+        } else Flag = 1;
+    }
+        cout << "Team : Red" << endl;
+        for (int tmp = 0; tmp < iRobot.Check_Red_Number(); tmp++) {
+            if (iRobot.Red_Blood[tmp] != 0 || iRobot.Red_Heat17[tmp] != 0 || iRobot.Red_Heat42[tmp] != 0) {
+                if(Red_Robot[tmp]=='B') {
+                    RH17 = 200 - iRobot.Red_Heat17[tmp];
+                    if (RH17 > 200) RH17 = -1;
+                    RH42=0;
+                }
+                if(Red_Robot[tmp]=='S') {
+                    RH17 = 300 - iRobot.Red_Heat17[tmp];
+                    if (RH17 > 300) RH17 = -1;
+                    RH42=0;
+                }
+                if(Red_Robot[tmp]=='Y') {
+                    RH42 = 300 - iRobot.Red_Heat42[tmp];
+                    if (RH42 > 300) RH42 = -1;
+                    RH17 = 0;
+                }
+                if(Red_Robot[tmp]=='G'){
+                    RH17=0;
+                    RH42=0;
+                }
+                cout << "Robot Type:" << Red_Robot[tmp] << "   Blood:" << iRobot.Red_Blood[tmp] << "  17mm:"
+                     << RH17 << "  42mm:" << RH42 << endl;
+            }
+        }
+        cout << "Team : Blue" << endl;
+        for (int tmp = 0; tmp < iRobot.Check_Blue_Number(); tmp++) {
+            if (iRobot.Blue_Blood[tmp] != 0 || iRobot.Blue_Heat17[tmp] != 0 || iRobot.Blue_Heat42[tmp] != 0) {
+                if(Blue_Robot[tmp]=='B') {
+                    BH17 = 200 - iRobot.Blue_Heat17[tmp];
+                    if (BH17 > 200) BH17 = -1;
+                    BH42=0;
+                }
+                if(Blue_Robot[tmp]=='S') {
+                    BH17 = 300 - iRobot.Blue_Heat17[tmp];
+                    if (BH17 > 300) BH17 = -1;
+                    BH42=0;
+                }
+                if(Blue_Robot[tmp]=='Y') {
+                    BH42 = 300 - iRobot.Blue_Heat42[tmp];
+                    if (BH42 > 300) BH42 = -1;
+                    BH17 = 0;
+                }
+                if(Blue_Robot[tmp]=='G'){
+                    BH17=0;
+                    BH42=0;
+                }
+                cout << "Robot Type:" << Blue_Robot[tmp] << "  Blood:" << iRobot.Blue_Blood[tmp] << "  17mm:"
+                     << BH17 << "  42mm:" << BH42 << endl;
+            }
+        }
+
+        return 0;
+
 
 }
