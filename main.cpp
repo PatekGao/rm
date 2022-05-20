@@ -146,12 +146,12 @@ public:
         number_b=Blue_Blood.size();
         return number_b;
     }
-    vector<int>Red_Blood=vector<int>(99);
-    vector<int>Red_Heat17=vector<int>(99);
-    vector<int>Red_Heat42=vector<int>(99);
-    vector<int>Blue_Blood=vector<int>(99);
-    vector<int>Blue_Heat17=vector<int>(99);
-    vector<int>Blue_Heat42=vector<int>(99);
+    vector<int>Red_Blood=vector<int>(9999);
+    vector<int>Red_Heat17=vector<int>(9999);
+    vector<int>Red_Heat42=vector<int>(9999);
+    vector<int>Blue_Blood=vector<int>(9999);
+    vector<int>Blue_Heat17=vector<int>(9999);
+    vector<int>Blue_Heat42=vector<int>(9999);
 };
 
 int Extra;
@@ -168,8 +168,8 @@ int weishu(int n){
 
 int main() {
     char cmd[20];
-    vector<char> Red_Robot(99);
-    vector<char> Blue_Robot(99);
+    vector<char> Red_Robot(9999);
+    vector<char> Blue_Robot(9999);
     Robot iRobot;
     int Flag = 0;
     char Team_Number, Robot_Number;
