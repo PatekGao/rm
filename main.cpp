@@ -90,8 +90,8 @@ int main() {
     char Team_Number, Robot_Number;
     int Damage, Bullet;
     long long int Number;
-    int RH17,RH42;
-    int BH17,BH42;
+    long long int RH17,RH42;
+    long long int BH17,BH42;
     while (Flag != 1) {
         cin.getline(cmd, 20);
         if (cmd[0] != 'E'&&cmd[0] !=  'e') {
@@ -221,7 +221,13 @@ int main() {
     }
     cout << "Team : Red" << endl;
     for (long long int tmp = 0; tmp < iRobot.Check_Red_Number(); tmp++) {
-        if (iRobot.Red_Blood[tmp] != 0 || iRobot.Red_Heat17[tmp] != 0 || iRobot.Red_Heat42[tmp] != 0) {
+        if (iRobot.Red_Blood[tmp]==-1){
+            RH17=0;
+            RH42=0;
+            cout << "Number: " << tmp << " Robot Type:" << Red_Robot[tmp] << "   Blood:" << iRobot.Red_Blood[tmp] << "  17mm:"
+                 << RH17 << "  42mm:" << RH42 << endl;
+        }
+        if (iRobot.Red_Heat17[tmp] != 0 || iRobot.Red_Heat42[tmp] != 0) {
             if(Red_Robot[tmp]=='B') {
                 RH17 = 200 - iRobot.Red_Heat17[tmp];
                 if (RH17 > 200) RH17 = -1;
@@ -244,7 +250,13 @@ int main() {
     }
     cout << "Team : Blue" << endl;
     for (long long int tmp = 0; tmp < iRobot.Check_Blue_Number(); tmp++) {
-        if (iRobot.Blue_Blood[tmp] != 0 || iRobot.Blue_Heat17[tmp] != 0 || iRobot.Blue_Heat42[tmp] != 0) {
+        if(iRobot.Blue_Blood[tmp]==-1){
+           BH17=0;
+           BH42=0;
+            cout << "Number: "<< tmp << " Robot Type:" << Blue_Robot[tmp] << "  Blood:" << iRobot.Blue_Blood[tmp] << "  17mm:"
+                 << BH17 << "  42mm:" << BH42 << endl;
+        }
+        if(iRobot.Blue_Heat17[tmp] != 0 || iRobot.Blue_Heat42[tmp] != 0) {
             if(Blue_Robot[tmp]=='B') {
                 BH17 = 200 - iRobot.Blue_Heat17[tmp];
                 if (BH17 > 200) BH17 = -1;
