@@ -59,7 +59,7 @@ void Robot::damage(int injury){
         heat=0;
     }
 }
-vector<Robot> rvec;
+vector<Robot> vector_robot;
 void Robot::show(){
     cout<<"Type: "<<type<<" Number: "<<num<<" Blood: "<<blood<<" Heat: "<<heat<<endl;
 }
@@ -79,13 +79,13 @@ int main(){
             } else if(tmp_team=='B'){
                 blue_map.insert(pair<int,char>(tmp_num,tmp_type));
             }
-            rvec.emplace_back(tmp_num,tmp_team);
+            vector_robot.emplace_back(tmp_num, tmp_team);
         }
         if(cmd[0]=='F'){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_injury;
-            for(auto & p : rvec){
+            for(auto & p : vector_robot){
                 if(p.Robot::team == tmp_team){
                     if(p.Robot::num == tmp_num){
                         p.damage(tmp_injury);
@@ -98,7 +98,7 @@ int main(){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_bullet;
-            for(auto & p : rvec){
+            for(auto & p : vector_robot){
                 if(p.Robot::num == tmp_num){
                     if(p.Robot::team == tmp_team){
                         p.overheat(tmp_bullet);
@@ -109,11 +109,11 @@ int main(){
         }
         if(cmd[0]=='E'){
             cout<<"Red team:"<<endl;
-            for(auto & p :rvec){
+            for(auto & p :vector_robot){
                 if(p.Robot::team == 'R') p.show();
             }
             cout<<"Blue team:"<<endl;
-            for(auto & p :rvec){
+            for(auto & p :vector_robot){
                 if(p.Robot::team == 'B') p.show();
             }
             flag=1;
