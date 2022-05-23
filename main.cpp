@@ -7,18 +7,21 @@ using namespace std;
 
 map<int,char> red_map;
 map<int,char> blue_map;
-enum Types{
-    Bubing,Shaobing,Yingxiong,Gongcheng
-};
-enum Teams{
-    red,blue
-};
+
 class Robot{
 private:
     int blood;
     int heat;
 public:
+    char tmp_type;
+    char tmp_team;
+    int tmp_num;
+    Robot(int r_num,char r_team,char r_type){
+        tmp_type=r_type;
+        tmp_team=r_team;
+        tmp_num=r_num;
 
+    }
 };
 
 int main(){
