@@ -3,6 +3,7 @@
 #include <map>
 
 using namespace std;
+int flag=0;
 
 map<int,char> red_map;
 map<int,char> blue_map;
@@ -63,28 +64,44 @@ vector<Robot> vector_robot;
 void Robot::show(){
     cout<<"Type: "<<type<<" Number: "<<num<<" Blood: "<<blood<<" Heat: "<<heat<<endl;
 }
+void error(){
+    cout<<"The input is not standardized!"<<endl;
+    flag=1;
+}
+int test(int test_team,int test_num){
+        int test = 0;
+        for(auto & p : vector_robot){
+            if(p.Robot::team == test_team){
+                if(p.Robot::num == test_num){
+                    test++;
+                }
+            }
+        }
+    return test;
+}
 int main(){
     char tmp_team,tmp_type;
     int tmp_num,tmp_injury,tmp_bullet;
-    int flag=0;
     char cmd[4]="000";
     while(flag==0){
         cin>>cmd;
-        if(cmd[0]=='A'){
+        if(cmd[0]!='A'&&cmd[0]!='F'&&cmd[0]!='H'&&cmd[0]!='E') error();
+        else if(cmd[0]=='A'){
             cin>>tmp_team;
             cin>>tmp_type;
             cin>>tmp_num;
+            if((tmp_team!='R'&&tmp_team!='B')||(tmp_type!='B'&&tmp_type!='S'&&tmp_type!='Y'&&tmp_type!='G')||tmp_num<=0||cin.fail()) error();
             if(tmp_team=='R'){
                 red_map.insert(pair<int,char>(tmp_num,tmp_type));
             } else if(tmp_team=='B'){
                 blue_map.insert(pair<int,char>(tmp_num,tmp_type));
             }
             vector_robot.emplace_back(tmp_num, tmp_team);
-        }
-        if(cmd[0]=='F'){
+        }else if(cmd[0]=='F'){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_injury;
+            if((tmp_team!='R'&&tmp_team!='B') || test(tmp_team,tmp_num)==0 || cin.fail()) error();
             for(auto & p : vector_robot){
                 if(p.Robot::team == tmp_team){
                     if(p.Robot::num == tmp_num){
@@ -93,11 +110,11 @@ int main(){
                     }
                 }
             }
-        }
-        if(cmd[0]=='H'){
+        }else if(cmd[0]=='H'){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_bullet;
+            if((tmp_team!='R'&&tmp_team!='B') || test(tmp_team,tmp_num)==0 || cin.fail()) error();
             for(auto & p : vector_robot){
                 if(p.Robot::num == tmp_num){
                     if(p.Robot::team == tmp_team){
@@ -106,8 +123,7 @@ int main(){
                     }
                 }
             }
-        }
-        if(cmd[0]=='E'){
+        }else if(cmd[0]=='E'){
             cout<<"Red team:"<<endl;
             for(auto & p :vector_robot){
                 if(p.Robot::team == 'R') p.show();
