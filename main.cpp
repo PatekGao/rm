@@ -15,11 +15,11 @@ private:
 public:
     char team;
     int num;
-    Robot(int r_num, char r_team){
-        team=r_team;
-        num=r_num;
-        if(r_team=='R') type=red_map[r_num];
-        else if(r_team=='B') type=blue_map[r_num];
+    Robot(int robot_num, char robot_team){
+        team=robot_team;
+        num=robot_num;
+        if(robot_team == 'R') type=red_map[robot_num];
+        else if(robot_team == 'B') type=blue_map[robot_num];
         if(type=='B'){
             blood=100;
             heat=0;
@@ -85,10 +85,10 @@ int main(){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_injury;
-            for(auto & r_t : rvec){
-                if(r_t.Robot::team == tmp_team){
-                    if(r_t.Robot::num == tmp_num){
-                        r_t.damage(tmp_injury);
+            for(auto & p : rvec){
+                if(p.Robot::team == tmp_team){
+                    if(p.Robot::num == tmp_num){
+                        p.damage(tmp_injury);
                         break;
                     }
                 }
@@ -98,10 +98,10 @@ int main(){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_bullet;
-            for(auto & r_t : rvec){
-                if(r_t.Robot::num == tmp_num){
-                    if(r_t.Robot::team == tmp_team){
-                        r_t.overheat(tmp_bullet);
+            for(auto & p : rvec){
+                if(p.Robot::num == tmp_num){
+                    if(p.Robot::team == tmp_team){
+                        p.overheat(tmp_bullet);
                         break;
                     }
                 }
@@ -109,12 +109,12 @@ int main(){
         }
         if(cmd[0]=='E'){
             cout<<"Red team:"<<endl;
-            for(auto & r_t :rvec){
-                if(r_t.Robot::team=='R') r_t.show();
+            for(auto & p :rvec){
+                if(p.Robot::team == 'R') p.show();
             }
             cout<<"Blue team:"<<endl;
-            for(auto & r_t :rvec){
-                if(r_t.Robot::team=='B') r_t.show();
+            for(auto & p :rvec){
+                if(p.Robot::team == 'B') p.show();
             }
             flag=1;
         }
