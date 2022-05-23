@@ -85,7 +85,7 @@ int main(){
     char cmd[4]="000";
     while(flag==0){
         cin>>cmd;
-        if(cmd[0]!='A'&&cmd[0]!='F'&&cmd[0]!='H'&&cmd[0]!='E') error();
+        if((cmd[0]!='A'&&cmd[0]!='F'&&cmd[0]!='H'&&cmd[0]!='E')||cin.fail()) error();
         else if(cmd[0]=='A'){
             cin>>tmp_team;
             cin>>tmp_type;
