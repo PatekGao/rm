@@ -1,6 +1,5 @@
 #include<iostream>
 #include<vector>
-#include<string>
 #include <map>
 
 using namespace std;
@@ -14,15 +13,13 @@ private:
     int heat;
     char type;
 public:
+    char team;
+    int num;
     Robot(int r_num, char r_team){
         team=r_team;
-        if(r_team=='R'){
-            red_num=r_num;
-            type=red_map[r_num];
-        }else if(r_team=='B'){
-            blue_num=r_num;
-            type=blue_map[r_num];
-        }
+        num=r_num;
+        if(r_team=='R') type=red_map[r_num];
+        else if(r_team=='B') type=blue_map[r_num];
         if(type=='B'){
             blood=100;
             heat=0;
@@ -32,16 +29,10 @@ public:
             heat=0;
             return;
         }
-//        void show(){
-//            cout<< "Number: " << num <<"Type: "
-//        }
     };
-    char team;
+    void show();
     void damage(int injury);
     void overheat(int bullet);
-
-    int red_num;
-    int blue_num;
 };
 void Robot::overheat(int bullet){
     if(type=='B'||type=='S'){
@@ -68,12 +59,15 @@ void Robot::damage(int injury){
         heat=0;
     }
 }
+vector<Robot> rvec;
+void Robot::show(){
+    cout<<"Type: "<<type<<" Number: "<<num<<" Blood: "<<blood<<" Heat: "<<heat<<endl;
+}
 int main(){
     char tmp_team,tmp_type;
     int tmp_num,tmp_injury,tmp_bullet;
     int flag=0;
     char cmd[4]="000";
-    vector<Robot> rvec;
     while(flag==0){
         cin>>cmd;
         if(cmd[0]=='A'){
@@ -93,16 +87,9 @@ int main(){
             cin>>tmp_injury;
             for(auto & r_t : rvec){
                 if(r_t.Robot::team == tmp_team){
-                    if(tmp_team=='R'){
-                        if(r_t.Robot::red_num == tmp_num){
-                            r_t.damage(tmp_injury);
-                            break;
-                        }
-                    }else if(tmp_team=='B'){
-                        if(r_t.Robot::blue_num == tmp_num){
-                            r_t.damage(tmp_injury);
-                            break;
-                        }
+                    if(r_t.Robot::num == tmp_num){
+                        r_t.damage(tmp_injury);
+                        break;
                     }
                 }
             }
@@ -111,11 +98,10 @@ int main(){
             cin>>tmp_team;
             cin>>tmp_num;
             cin>>tmp_bullet;
-
-            for(auto r_t = rvec.begin(); r_t != rvec.end(); r_t++){
-                if(r_t->num == tmp_num){
-                    if(r_t->team == tmp_team){
-                        (*r_t).overheat(tmp_bullet);
+            for(auto & r_t : rvec){
+                if(r_t.Robot::num == tmp_num){
+                    if(r_t.Robot::team == tmp_team){
+                        r_t.overheat(tmp_bullet);
                         break;
                     }
                 }
@@ -123,11 +109,14 @@ int main(){
         }
         if(cmd[0]=='E'){
             cout<<"Red team:"<<endl;
-            for(auto & r_t : rvec){
-                if(r_t.team == 'R') show();
+            for(auto & r_t :rvec){
+                if(r_t.Robot::team=='R') r_t.show();
+            }
+            cout<<"Blue team:"<<endl;
+            for(auto & r_t :rvec){
+                if(r_t.Robot::team=='B') r_t.show();
             }
             flag=1;
         }
     }
-
 }
