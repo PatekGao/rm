@@ -69,14 +69,14 @@ void error(){
     flag=1;
 }
 int test(int test_team,int test_num){
-        int test = 0;
-        for(auto & p : vector_robot){
-            if(p.Robot::team == test_team){
-                if(p.Robot::num == test_num){
-                    test++;
-                }
+    int test = 0;
+    for(auto & p : vector_robot){
+        if(p.Robot::team == test_team){
+            if(p.Robot::num == test_num){
+                test++;
             }
         }
+    }
     return test;
 }
 int main(){
@@ -92,9 +92,11 @@ int main(){
             cin>>tmp_num;
             if((tmp_team!='R'&&tmp_team!='B')||(tmp_type!='B'&&tmp_type!='S'&&tmp_type!='Y'&&tmp_type!='G')||tmp_num<=0||cin.fail()) error();
             if(tmp_team=='R'){
-                red_map.insert(pair<int,char>(tmp_num,tmp_type));
+                if(test(tmp_team,tmp_num)==0) red_map.insert(pair<int,char>(tmp_num,tmp_type));
+                else error();
             } else if(tmp_team=='B'){
-                blue_map.insert(pair<int,char>(tmp_num,tmp_type));
+                if(test(tmp_team,tmp_num)==0) blue_map.insert(pair<int,char>(tmp_num,tmp_type));
+                else error();
             }
             vector_robot.emplace_back(tmp_num, tmp_team);
         }else if(cmd[0]=='F'){
